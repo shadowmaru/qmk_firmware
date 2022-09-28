@@ -155,21 +155,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   return true;
 }
 
-#ifdef ENCODER_ENABLE
-bool encoder_update_user(uint8_t index, bool clockwise) {
-    if (index == 0) { /* First encoder */
-        if (clockwise) {
-            tap_code(KC_VOLU);
-        } else {
-            tap_code(KC_VOLD);
-        }
-    } else if (index == 1) { /* Second encoder */
-        if (clockwise) {
-            tap_code(KC_MS_WH_UP);
-        } else {
-            tap_code(KC_MS_WH_DOWN);
-        }
-    }
-    return true;
-}
-#endif
+#ifdef ENCODER_MAP_ENABLE
+
+const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
+    [_COLEMAK] =  { ENCODER_CCW_CW(KC_VOLD, KC_VOLU), ENCODER_CCW_CW(KC_MS_WH_DOWN, KC_MS_WH_UP)  },
+    [_LOWER]   =  { ENCODER_CCW_CW(KC_VOLD, KC_VOLU), ENCODER_CCW_CW(KC_MS_WH_LEFT, KC_MS_WH_RIGHT)  },
+    [_RAISE]   =  { ENCODER_CCW_CW(XXXXXXX, XXXXXXX), ENCODER_CCW_CW(XXXXXXX, XXXXXXX)  },
+    [_ADJUST]  =  { ENCODER_CCW_CW(XXXXXXX, XXXXXXX), ENCODER_CCW_CW(XXXXXXX, XXXXXXX) },
+};
+
+#endif // ENCODER_MAP_ENABLE
